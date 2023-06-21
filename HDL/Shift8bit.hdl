@@ -1,0 +1,15 @@
+CHIP Shift8bit {
+
+    IN x;
+    OUT out[8];
+
+    PARTS:
+    DFF(in=x,out=dff1,out=out[0]);
+    DFF(in=dff1,out=dff2,out=out[1]);
+    DFF(in=dff2,out=dff3,out=out[2]);
+    DFF(in=dff3,out=dff4,out=out[3]);
+    DFF(in=dff4,out=dff5,out=out[4]);
+    DFF(in=dff5,out=dff6,out=out[5]);
+    DFF(in=dff6,out=dff7,out=out[6]);
+    DFF(in=dff7,out=dff8,out=out[7]);
+}
