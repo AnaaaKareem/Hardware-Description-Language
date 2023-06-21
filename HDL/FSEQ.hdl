@@ -1,0 +1,41 @@
+/**
+* FSEQ Gate.
+*/
+
+CHIP FSEQ {
+    IN A, B, C, D, f0, f1, load;
+    OUT E, F, G;
+
+    PARTS:
+
+    // The (t) in Ct and Dt is related to the time
+    // NextC and NextD outputs depending on the load bit
+    // Loading the Previous C and D Using Data FlipFlops
+    Mux(a=D, b=B, sel=load, out=Cin);
+    Mux(a=Cin, b=C, sel=load, out=Ct);
+    DFF(in=Ct, out=CD, out=NextC);
+
+    Mux(a=C, b=D, sel=load, out=Din);
+    Mux(a=Din, b=D, sel=load, out=Dt);
+    DFF(in=Dt, out=DD, out=NextD);
+
+    // Assign the F chips
+    FZero(C=NextC, D=NextD, F=fzeroF, G=fzeroG);
+    FOne(A=A, B=B, C=NextC, D=NextD, F=foneF, G=foneG);
+    FTwo(A=A, B=B, C=NextC, D=NextD, F=ftwoF, G=ftwoG);
+    FThree(A=A, B=B, C=NextC, D=NextD, E=ethreeE, F=fthreeF, G=fthreeG);
+
+    // Choosing the output F
+    Mux(a=fzeroF, b=foneF, sel=f0, out=choiceF1);
+    Mux(a=ftwoF, b=fthreeF, sel=f0, out=choiceF2);
+    Mux(a=choiceF1, b=choiceF2, sel=f1, out=F);
+
+    // Choosing the output G
+    Mux(a=fzeroG, b=foneG, sel=f0, out=choiceG1);
+    Mux(a=ftwoG, b=fthreeG, sel=f0, out=choiceG2);
+    Mux(a=choiceG1, b=choiceG2, sel=f1, out=G);
+
+    // Choosing the output E
+    And(a=f0, b=f1, out=trueE);
+    Mux(a=trueE, b=ethreeE, sel=trueE, out=E);
+}

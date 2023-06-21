@@ -1,0 +1,31 @@
+/**
+* FALL Gate.
+*/
+
+CHIP FALL {
+    IN A, B, C, D, f0, f1;
+    OUT E, F, G;
+
+    PARTS:
+
+    // Assign The F chips
+    FZero(C=C, D=D, F=fzeroF, G=fzeroG);
+    FOne(A=A, B=B, C=C, D=D, F=foneF, G=foneG);
+    FTwo(A=A, B=B, C=C, D=D, F=ftwoF, G=ftwoG);
+    FThree(A=A, B=B, C=C, D=D, E=ethreeE, F=fthreeF, G=fthreeG);
+
+    // Choosing the Output F
+    Mux(a=fzeroF, b=foneF, sel=f0, out=choiceF1);
+    Mux(a=ftwoF, b=fthreeF, sel=f0, out=choiceF2);
+    Mux(a=choiceF1, b=choiceF2, sel=f1, out=F);
+
+    // Choosing the Output G
+    Mux(a=fzeroG, b=foneG, sel=f0, out=choiceG1);
+    Mux(a=ftwoG, b=fthreeG ,sel=f0, out=choiceG2);
+    Mux(a=choiceG1, b=choiceG2, sel=f1, out=G);
+
+    // Choosing the Output E
+    And(a=f0, b=f1, out=trueE);
+    // DMux(in=ethreeE, sel=trueE, a=a, b=E);
+    Mux(a=trueE, b=ethreeE, sel=trueE, out=E);
+}

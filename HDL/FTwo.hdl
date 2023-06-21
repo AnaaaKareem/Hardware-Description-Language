@@ -1,0 +1,12 @@
+/**
+* FTwo Gate.
+*/
+
+CHIP FTwo {
+    IN A, B, C, D;
+    OUT F, G;
+
+    PARTS:
+    Or(a=C, b=A, out=F);
+    Or(a=D, b=B, out=G);
+}

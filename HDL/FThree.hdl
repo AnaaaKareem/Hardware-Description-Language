@@ -1,0 +1,70 @@
+/**
+* FThree Gate.
+*/
+
+CHIP FThree {
+    IN A, B, C, D;
+    OUT E, F, G;
+
+    PARTS:
+
+    // Not Gates
+    Not(in=A, out=NotA);
+    Not(in=B, out=NotB);
+    Not(in=C, out=NotC);
+    Not(in=D, out=NotD);
+
+    // Output for E
+    And(a=A, b=C, out=andE1);
+
+    And(a=B, b=C, out=andE2.1);
+    And(a=andE2.1, b=D, out=andE2);
+
+    And(a=A, b=B, out=andE3.1);
+    And(a=andE3.1, b=D, out=andE3);
+
+    Or(a=andE1, b=andE2, out=orE1.1);
+    Or(a=orE1.1, b=andE3, out=E);
+
+    // Output for F
+
+    // AND gate 1
+    And(a=NotA, b=NotB, out=andF1.1);
+    And(a=andF1.1, b=C, out=andF1);
+
+    // AND gate 2
+    And(a=NotA, b=C, out=andF2.1);
+    And(a=andF2.1, b=NotD, out=andF2);
+
+    // AND gate 3
+    And(a=A, b=NotB, out=andF3.1);
+    And(a=andF3.1, b=NotC, out=andF3);
+
+    // AND gate 4
+    And(a=A, b=NotC, out=andF4.1);
+    And(a=andF4.1, b=NotD, out=andF4);
+
+    // AND gate 5
+    And(a=NotA, b=B, out=andF5.1);
+    And(a=NotC, b=D, out=andF5.2);
+    And(a=andF5.1, b=andF5.2, out=andF5);
+
+    // AND gate 6
+    And(a=A, b=B, out=andF6.1);
+    And(a=C, b=D, out=andF6.2);
+    And(a=andF6.1, b=andF6.2, out=andF6);
+
+    // OR gates
+    Or(a=andF1, b=andF2, out=orF1);
+    Or(a=andF3, b=andF4, out=orF2);
+    Or(a=andF5, b=andF6, out=orF3);
+    Or(a=orF1, b=orF2, out=orF4);
+    Or(a=orF4, b=orF3, out=F);
+
+    // Output for G
+    And(a=NotB, b=D, out=andG1);
+    And(a=B, b=NotD, out=andG2);
+    Or(a=andG1, b=andG2, out=G);
+}
+
+
